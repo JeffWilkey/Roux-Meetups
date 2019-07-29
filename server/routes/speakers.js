@@ -17,14 +17,27 @@ module.exports = (params) => {
         artwork: results[1]
       });
     } catch (err) {
-      next(err);
+      return next(err);
     }
   });
 
-  speakerRouter.get('/:name', (req, res, next) => {
-    return res.render('speakers/detail', {
-      page: req.params.name
-    });
+  speakerRouter.get('/:name', async (req, res, next) => {
+    try {
+      const results = await Promise.all([
+        speakerService.getSpeaker(req.params.name),
+        speakerService.getArtworkForSpeaker(req.params.name)
+      ]);
+
+      if (!results[0]) return next();
+
+      return res.render('speakers/detail', {
+        page: req.params.name,
+        speaker: results[0],
+        artwork: results[1]
+      });
+    } catch (err) {
+      return next(err);
+    }
   });
 
   return speakerRouter
