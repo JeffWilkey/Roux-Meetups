@@ -34,6 +34,9 @@ module.exports = (params) => {
           feedbacklist
         });
       }
+
+      await feedbackService.addEntry(fbName, fbTitle, fbMessage);
+      
       return res.redirect('/feedback?success=true');
     } catch (err) {
       return next(error);
