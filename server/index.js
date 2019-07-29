@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const path = require('path');
 const configs = require('./config');
 const SpeakerService = require('./services/SpeakerService');
+const FeedbackService = require('./services/FeedbackService');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +11,7 @@ const config = configs[app.get('env')];
 
 // Service Instances
 const speakerService = new SpeakerService(config.data.speakers);
+const feedbackService = new FeedbackService(config.data.feedback);
 
 // Template Engine and Settings
 app.set('view engine', 'pug');
@@ -39,7 +41,8 @@ app.use(async (req, res, next) => {
 // Routing
 const router = require('./routes');
 app.use('/', router({
-  speakerService
+  speakerService,
+  feedbackService
 }));
 
 // Error handling

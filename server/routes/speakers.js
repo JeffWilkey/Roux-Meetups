@@ -17,7 +17,7 @@ module.exports = (params) => {
         artwork: results[1]
       });
     } catch (err) {
-      return next(err);
+      return err;
     }
   });
 
